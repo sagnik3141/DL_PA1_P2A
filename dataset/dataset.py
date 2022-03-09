@@ -30,4 +30,4 @@ class ImageDataset(Dataset):
         data = torch.from_numpy(data)
         label = torch.from_numpy(label)
 
-        return data, label
+        return (data, label)
