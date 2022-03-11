@@ -17,13 +17,13 @@ class Model(nn.Module):
         self.input_dim = args.input_dim
         self.num_classes = args.num_classes
         self.num_nodes_h1 = args.num_nodes_h1
-        self.num_nodes_h2 = args.num_nodel_h2
+        self.num_nodes_h2 = args.num_nodes_h2
 
         
         self.linear1 = nn.Linear(self.input_dim, self.num_nodes_h1)
-        self.tanh1 = nn.Tanh(inplace = True)
+        self.tanh1 = nn.Tanh()
         self.linear2 = nn.Linear(self.num_nodes_h1, self.num_nodes_h2)
-        self.tanh2 = nn.Tanh(inplace = True)
+        self.tanh2 = nn.Tanh()
         self.out_layer = nn.Linear(self.num_nodes_h2, self.num_classes)
         
     def forward(self, x):

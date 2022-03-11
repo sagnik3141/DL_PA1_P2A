@@ -16,6 +16,10 @@ class ImageDataset(Dataset):
         self.data_arr = np.loadtxt(args.data_path)
         self.labels_arr = np.loadtxt(args.labels_path)
 
+        self.indices = self.labels_arr<=4 # Classes Assigned to our Group
+        self.data_arr = self.data_arr[self.indices]
+        self.labels_arr = self.labels_arr[self.indices]
+
         assert self.data_arr.shape[0] == self.labels_arr.shape[0], "Data and Labels mismatch."
 
     def __len__(self):
@@ -28,6 +32,6 @@ class ImageDataset(Dataset):
         label = self.labels_arr[index]
 
         data = torch.from_numpy(data)
-        label = torch.from_numpy(label)
+        label = torch.from_numpy(np.asarray(label))
 
         return (data, label)
