@@ -89,8 +89,7 @@ def train(model, train_loader, val_loader, args, device):
 def main():
     
     args = get_args()
-    #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    device = torch.device("cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     # Setup model
     model = Model(args)

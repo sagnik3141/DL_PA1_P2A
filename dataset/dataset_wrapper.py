@@ -21,8 +21,8 @@ def create_dataloaders(args):
         np.random.shuffle(indices)
 
     val_indices, test_indices, train_indices = indices[:val_split], \
-        indices[val_split:test_split], \
-            indices[test_split:]
+        indices[val_split:val_split+test_split], \
+            indices[val_split+test_split:]
 
     # Create Samplers
     train_sampler = SubsetRandomSampler(train_indices)

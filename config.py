@@ -26,7 +26,10 @@ def get_args():
     parser.add_argument('--optim', type = str, default = 'delta')
     parser.add_argument('--lr', type = float, default = 1e-4)
     parser.add_argument('--momentum', type = float, default = 0.9)
-    parser.add_argument('--num_epochs', type = int, default = 500)
+    parser.add_argument('--num_epochs', type = int, default = 250)
+
+    # Test Args
+    parser.add_argument('--ckpt_best_path', type = str, default = './checkpoints/epoch_200.pt')
     
     args = parser.parse_args()
 
