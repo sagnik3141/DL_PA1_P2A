@@ -23,4 +23,7 @@ def plot_confusion_matrix(true_labels, pred_labels):
     """
 
     matrix = confusion_matrix(true_labels, pred_labels)
-    print(matrix)
+    labels = ['coast', 'forest', 'highway', 'insidecity', 'mountain']
+    sns.set(font_scale = 0.8)
+    sns.heatmap(matrix, annot = True, xticklabels = labels, yticklabels = labels)
+    plt.show()
