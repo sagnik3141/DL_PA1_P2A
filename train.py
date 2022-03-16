@@ -9,7 +9,7 @@ from model import Model
 from dataset.dataset_wrapper import create_dataloaders
 from display_util import plot_errors
 
-def train(model, train_loader, val_loader, args, device):
+def train(model, train_loader, val_loader, args, device, tune = False):
     
     ### Selecting Optimizer ###
     if(args.optim == "delta"):
@@ -28,6 +28,8 @@ def train(model, train_loader, val_loader, args, device):
     writer = SummaryWriter('runs/train') # Tensorboard for plots
     epoch_errors = []
     val_epoch_errors = []
+    best_val_error = None
+    counter = 0
     for i in tqdm(range(args.num_epochs)):
 
         ### Weight Updates ###
@@ -69,6 +71,18 @@ def train(model, train_loader, val_loader, args, device):
         avg_val_error = sum(val_errors)/len(val_errors)
         val_epoch_errors.append(avg_val_error)
 
+        # Early Stopping
+        if best_val_error is None:
+            best_val_error = avg_val_error
+        elif avg_val_error>best_val_error:
+            counter+=1
+            if counter>args.patience:
+                print(f"Early stopping at epoch {i+1}.")
+                break
+        else:
+            best_val_error = avg_val_error
+            counter = 0
+
         # Plotting
         writer.add_scalars('Loss', {
             'Train': epoch_loss,
@@ -83,6 +97,9 @@ def train(model, train_loader, val_loader, args, device):
         torch.save(model.state_dict(), os.path.join(args.ckpt_dir, f'epoch_{i+1}.pt'))
 
     # Error Plots
+    if tune:
+        return (sum(val_epoch_errors)/len(val_epoch_errors))
+
     plot_errors(epoch_errors, val_epoch_errors)
 
 
