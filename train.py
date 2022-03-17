@@ -28,9 +28,10 @@ def train(model, train_loader, val_loader, args, device, tune = False):
     writer = SummaryWriter('runs/train') # Tensorboard for plots
     epoch_errors = []
     val_epoch_errors = []
-    best_val_error = None
+    best_val_loss = None
     counter = 0
-    for i in tqdm(range(args.num_epochs)):
+    iterator = tqdm(range(args.num_epochs))
+    for i in iterator:
 
         ### Weight Updates ###
         epoch_error = [] # Average Error for every batch
@@ -53,6 +54,7 @@ def train(model, train_loader, val_loader, args, device, tune = False):
 
         avg_epoch_error = sum(epoch_error)/len(epoch_error)
         epoch_errors.append(avg_epoch_error)
+        epoch_loss = epoch_loss/len(epoch_error)
 
         ### Validation ###
         val_errors = []
@@ -70,17 +72,20 @@ def train(model, train_loader, val_loader, args, device, tune = False):
 
         avg_val_error = sum(val_errors)/len(val_errors)
         val_epoch_errors.append(avg_val_error)
+        val_loss = val_loss/len(val_errors)
+
 
         # Early Stopping
-        if best_val_error is None:
-            best_val_error = avg_val_error
-        elif avg_val_error>best_val_error:
+        if best_val_loss is None:
+            best_val_loss = val_loss
+        elif val_loss>best_val_loss:
             counter+=1
             if counter>args.patience:
+                iterator.close()
                 print(f"Early stopping at epoch {i+1}.")
                 break
         else:
-            best_val_error = avg_val_error
+            best_val_loss = val_loss
             counter = 0
 
         # Plotting
