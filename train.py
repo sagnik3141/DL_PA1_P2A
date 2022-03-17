@@ -87,6 +87,7 @@ def train(model, train_loader, val_loader, args, device, tune = False):
         else:
             best_val_loss = val_loss
             counter = 0
+            torch.save(model.state_dict(), os.path.join(args.ckpt_dir, f'{args.optim}_best_weights.pt'))
 
         # Plotting
         writer.add_scalars('Loss', {
@@ -99,7 +100,7 @@ def train(model, train_loader, val_loader, args, device, tune = False):
             'Validation': avg_val_error,
         }, i+1)
         ### Save Weights ###
-        torch.save(model.state_dict(), os.path.join(args.ckpt_dir, f'epoch_{i+1}.pt'))
+        
 
     # Error Plots
     if tune:
