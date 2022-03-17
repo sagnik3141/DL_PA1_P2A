@@ -73,7 +73,7 @@ def train(model, train_loader, val_loader, args, device, tune = False):
         avg_val_error = sum(val_errors)/len(val_errors)
         val_epoch_errors.append(avg_val_error)
         val_loss = val_loss/len(val_errors)
-
+        iterator.set_postfix({'train_loss': epoch_loss.item(), 'val_loss': val_loss.item()})
 
         # Early Stopping
         if best_val_loss is None:
