@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 def plot_errors(train_errors, val_errors):
     """
@@ -24,6 +23,7 @@ def plot_confusion_matrix(true_labels, pred_labels):
 
     matrix = confusion_matrix(true_labels, pred_labels)
     labels = ['coast', 'forest', 'highway', 'insidecity', 'mountain']
-    sns.set(font_scale = 0.8)
-    sns.heatmap(matrix, annot = True, xticklabels = labels, yticklabels = labels)
+    disp = ConfusionMatrixDisplay(confusion_matrix=matrix, display_labels=labels)
+    disp.plot()
+    plt.title(r"Confusion Matrix")
     plt.show()
